@@ -6,7 +6,7 @@
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:31:07 by hcho2             #+#    #+#             */
-/*   Updated: 2023/06/23 12:58:35 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/14 14:29:53 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(char	*s1, char	*s2);
 int		ft_strncmp(char *s1, char *s2, int n);
 char	**ft_split(char const *str, char c);
-void	ft_error(char *str);
+void	ft_error(char *str, int status);
 char	*ft_pathjoin(char *s1, char *s2);
 char	**find_path(char **envp);
 char	*add_path(char *av, char **path);

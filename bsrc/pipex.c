@@ -6,7 +6,7 @@
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:42:49 by hcho2             #+#    #+#             */
-/*   Updated: 2023/06/23 15:50:03 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/17 20:19:15 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,17 @@ void	child(char *cmd, char **path, char **envp)
 
 void	heredoc(int ac, char **av)
 {
+	char	*filename;
 	char	*eof;
 	char	*line;
 	int		fd;
 
 	if (ac < 6)
 		usage();
-	fd = open(".tmp_infile", O_CREAT | O_TRUNC | O_RDWR, 0644);
+	filename = ".tmp_infile";
+	fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (fd < 0)
-		ft_error(".tmp_infile");
+		ft_error(filename);
 	eof = ft_strjoin(av[2], "\n");
 	line = get_next_line(0);
 	while (line && strcmp(line, eof) != 0)
@@ -69,9 +71,9 @@ void	heredoc(int ac, char **av)
 	free(line);
 	free(eof);
 	close(fd);
-	fd = open(".tmp_infile", O_RDONLY);
+	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		ft_error(".tmp_infile");
+		ft_error(filename);
 	dup2(fd, STDIN_FILENO);
 }
 
@@ -80,7 +82,10 @@ void	pipex(int ac, char **av, char **envp, int i)
 	char	**path;
 	int		outfile_fd;
 
-	outfile_fd = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (i == 2)
+		outfile_fd = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	else
+		outfile_fd = open(av[ac - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (outfile_fd < 0)
 		ft_error("file open error");
 	path = find_path(envp);
@@ -111,4 +116,5 @@ int	main(int ac, char **av, char **envp)
 		dup2(infile_fd, STDIN_FILENO);
 	}
 	pipex(ac, av, envp, i);
+	unlink(".tmp_infile");
 }

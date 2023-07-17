@@ -6,7 +6,7 @@
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:04:44 by hcho2             #+#    #+#             */
-/*   Updated: 2023/06/20 19:33:38 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/17 15:40:47 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	ft_strncmp(char *s1, char *s2, int n)
 	return (0);
 }
 
-void	ft_error(char *str)
+void	ft_error(char *str, int status)
 {
 	ft_putstr_fd("pipex: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": ", 2);
 	if (errno)
 		perror("");
-	exit(1);
+	exit(status);
 }
 
 void	usage(void)

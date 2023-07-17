@@ -6,7 +6,7 @@
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:42:49 by hcho2             #+#    #+#             */
-/*   Updated: 2023/07/12 16:03:48 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/17 15:40:44 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execute(char *cmd, char **path, char **envp)
 	cmd_args = ft_split(cmd, ' ');
 	cmd_path = add_path(cmd, path);
 	if (execve(cmd_path, cmd_args, envp) == -1)
-		ft_error(cmd_args[0]);
+		ft_error(cmd_args[0], 126);
 }
 
 void	child(char *cmd, char **path, char **envp)
@@ -29,10 +29,10 @@ void	child(char *cmd, char **path, char **envp)
 	int		fd[2];
 
 	if (pipe(fd) < 0)
-		ft_error("pipe");
+		ft_error("pipe", 1);
 	pid = fork();
 	if (pid < 0)
-		ft_error("fork");
+		ft_error("fork", 1);
 	if (pid == 0)
 	{
 		close(fd[0]);
@@ -47,34 +47,6 @@ void	child(char *cmd, char **path, char **envp)
 	}
 }
 
-void	heredoc(int ac, char **av)
-{
-	char	*eof;
-	char	*line;
-	int		fd;
-
-	if (ac < 6)
-		usage();
-	fd = open(".tmp_infile", O_CREAT | O_TRUNC | O_RDWR, 0644);
-	if (fd < 0)
-		ft_error(".tmp_infile");
-	eof = ft_strjoin(av[2], "\n");
-	line = get_next_line(0);
-	while (line && strcmp(line, eof) != 0)
-	{
-		ft_putstr_fd(line, fd);
-		free(line);
-		line = get_next_line(0);
-	}
-	free(line);
-	free(eof);
-	close(fd);
-	fd = open(".tmp_infile", O_RDONLY);
-	if (fd < 0)
-		ft_error(".tmp_infile");
-	dup2(fd, STDIN_FILENO);
-}
-
 void	pipex(int ac, char **av, char **envp, int i)
 {
 	char	**path;
@@ -82,7 +54,7 @@ void	pipex(int ac, char **av, char **envp, int i)
 
 	outfile_fd = open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (outfile_fd < 0)
-		ft_error("file open error");
+		ft_error("file open error", 1);
 	path = find_path(envp);
 	while (i < ac - 2)
 		child(av[i++], path, envp);
@@ -97,23 +69,10 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac < 5)
 		usage();
-	if (ft_strcmp(av[1], "here_doc") == 0)
-	{
-		heredoc(ac, av);
-		i = 3;
-	}
-	else
-	{
-		i = 2;
-		infile_fd = open(av[1], O_RDONLY);
-		if (infile_fd < 0)
-		{
-			infile_fd = open(".tmp", O_CREAT | O_TRUNC | O_RDWR, 0644);
-			ft_putstr_fd("bash: ", 2);
-			perror(av[1]);
-		}
-		printf("%d\n", infile_fd);
-		dup2(infile_fd, STDIN_FILENO);
-	}
+	i = 2;
+	infile_fd = open(av[1], O_RDONLY);
+	if (infile_fd < 0)
+		ft_error(av[1], 1);
+	dup2(infile_fd, STDIN_FILENO);
 	pipex(ac, av, envp, i);
 }

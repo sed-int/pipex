@@ -6,7 +6,7 @@
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:54:10 by hcho2             #+#    #+#             */
-/*   Updated: 2023/06/20 11:36:22 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/17 15:40:51 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**find_path(char **envp)
 	}
 	path = ft_split(&envp[i][5], ':');
 	if (!path)
-		ft_error("Path error: ");
+		ft_error("Path error: ", 127);
 	return (path);
 }
 
@@ -68,6 +68,6 @@ char	*add_path(char *cmd, char **path)
 		free(cmd_path);
 		i++;
 	}
-	ft_error("Command not found");
+	ft_error("Command not found", 127);
 	return (NULL);
 }
