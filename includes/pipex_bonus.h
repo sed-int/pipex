@@ -6,7 +6,7 @@
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:31:07 by hcho2             #+#    #+#             */
-/*   Updated: 2023/07/17 20:29:19 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/18 14:27:39 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@
 /* errno */
 # include <errno.h>
 /* get_next_line */
-# include "get_next_line.h"
 # include "../libft/libft.h"
 
-void	ft_error(char *str);
+void	ft_error(char *str, int status);
 char	*ft_pathjoin(char *s1, char *s2);
 char	**find_path(char **envp);
 char	*add_path(char *av, char **path);

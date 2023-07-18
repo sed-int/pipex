@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   path_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:54:10 by hcho2             #+#    #+#             */
-/*   Updated: 2023/07/14 14:52:14 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/18 14:41:05 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**find_path(char **envp)
 	}
 	path = ft_split(&envp[i][5], ':');
 	if (!path)
-		ft_error("Path error: ");
+		ft_error("Path error: ", 127);
 	return (path);
 }
 
@@ -68,6 +68,22 @@ char	*add_path(char *cmd, char **path)
 		free(cmd_path);
 		i++;
 	}
-	ft_error("Command not found");
+	ft_error("Command not found", 127);
 	return (NULL);
+}
+
+void	ft_error(char *str, int status)
+{
+	ft_putstr_fd("pipex: ", status);
+	ft_putstr_fd(str, status);
+	ft_putstr_fd(": ", status);
+	if (errno)
+		perror("");
+	exit(status);
+}
+
+void	usage(void)
+{
+	ft_putstr_fd("pipex: Too few arguments\n", 2);
+	exit(1);
 }

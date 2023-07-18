@@ -6,7 +6,7 @@
 /*   By: hcho2 <hcho2@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:54:10 by hcho2             #+#    #+#             */
-/*   Updated: 2023/07/17 15:40:51 by hcho2            ###   ########.fr       */
+/*   Updated: 2023/07/18 14:38:46 by hcho2            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,20 @@ char	*add_path(char *cmd, char **path)
 	}
 	ft_error("Command not found", 127);
 	return (NULL);
+}
+
+void	ft_error(char *str, int status)
+{
+	ft_putstr_fd("pipex: ", status);
+	ft_putstr_fd(str, status);
+	ft_putstr_fd(": ", status);
+	if (errno)
+		perror("");
+	exit(status);
+}
+
+void	usage(void)
+{
+	ft_putstr_fd("pipex: Too few arguments\n", 2);
+	exit(1);
 }
